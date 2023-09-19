@@ -18,7 +18,7 @@ class Guesses{
     private:
         // variables for guess tracking
         int guess = 0;
-        std::array<int, 5> guesses = {};
+        std::array<int, 10> guesses = {};
         //size of the array
         int permittedGuesses = sizeof(guesses) / sizeof(guesses[0]);
         int Length = permittedGuesses - 1;

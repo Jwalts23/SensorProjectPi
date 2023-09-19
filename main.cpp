@@ -168,6 +168,7 @@ int main(void){
 
                 if (RemaingGuesses == 0){
                     std::cout << "You used all " << PermittedGuesses << " guesses!\n";
+                    std::cout << "The number was " << random << ".\n";
                     gc.reset();
                     state = PLAY_AGAIN;
                     break;
@@ -215,7 +216,7 @@ int main(void){
                 }
 
                 // TEMP: printing the value for the sake of testing features
-                std::cout << "The number is " << random << "\n";
+                // std::cout << "The number is " << random << "\n";
                 std::cout << "You entered " << num << "\n";
 
                 // need to check if the previous guess is the same to deal with button debouncing
