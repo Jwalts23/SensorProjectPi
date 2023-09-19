@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
-#include "rotaryEncoder.h"
-#include "button.h"
 #include <array>
 #include <thread>
+#include "rotaryEncoder.h"
+#include "button.h"
 #include "LED.h"
 #include "sevenSeg4.h"
 #include "Guesses.h"
