@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/sensor_lib.dir/main.cpp.o -o sensor_lib   -L/home/jwalts/Tutorials/libs  -Wl,-rpath,/home/jwalts/Tutorials/libs:/usr/local/lib libs/libsensors.a /usr/local/lib/libwiringPi.so 
