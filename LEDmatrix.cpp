@@ -1,4 +1,6 @@
-#include"LEDmatrix.h"
+#include "LEDmatrix.h"
+
+// def has potential for arrow interaction like the book
 
 void LEDmatrix::Delay_xms(uint x){
     bcm2835_delay(x);
@@ -34,11 +36,17 @@ void LEDmatrix::Init_BCM2835(){
 }
 
 void LEDmatrix::init(){
+
+    if (!bcm2835_init())
+    {
+        printf("Unable to init bcm2835.\n");
+        return;
+    }
     Init_BCM2835();
     Init_MAX7219();
 }
 
-void LEDmatrix::testloop(){
+void LEDmatrix::testLoop(){
     while (1){
         for (int j = 0; j < 36; j++){
             for (int i = 1; i < 9; i++){
