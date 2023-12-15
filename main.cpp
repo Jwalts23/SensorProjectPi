@@ -3,32 +3,42 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
-#include "passiveBuzzer.h"
+#include "button.h"
+#include "LED.h"
 #include <array>
 
 #endif // _INCLUDES_H_
 
-#define BeepPin 0
+#define BeepPin 1
+#define LEDpin 0
 
-passiveBuzzer passive = passiveBuzzer(BeepPin);
+button Button = button(BeepPin);
+LED led = LED(LEDpin);
 
 
 void init(){
     wiringPiSetup();
-    passive.init();
+    Button.init();
+    led.init();
 
 }
 
 int main(void){
 
     init(); 
+    led.off();
+
+    // variable = (condition) ? expressionTrue : expressionFalse;
+
+    bool on = false; 
     while(1){
-        int len = sizeof(passive.song_1) / sizeof(passive.song_1[0]);
-        passive.playSong(passive.song_1, passive.beat_1, len);
-        delay(1000);
-        len = sizeof(passive.song_2) / sizeof(passive.song_2[0]);
-        passive.playSong(passive.song_2, passive.beat_2, len);
-        delay(1000);
+        // printf("%d\n", Button.buttonPressed());
+        
+        if(Button.buttonPressed()){
+            (on)? led.off(): led.on(); 
+            on = !on;
+        }
+        delay(40);
     }
 
 }
