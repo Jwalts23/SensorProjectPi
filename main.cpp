@@ -3,18 +3,18 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
-#include "LightSwitch.h"
+#include "rotaryEncoder.h"
 #include <array>
 
 #endif // _INCLUDES_H_
 
 
-LightSwitch ls = LightSwitch();
+rotaryEncoder re = rotaryEncoder();
 
 
 void init(){
     wiringPiSetup();
-    ls.init();
+    re.init();
 
 }
 
@@ -22,11 +22,12 @@ int main(void){
 
     init(); 
 
-    while(1){
-        // printf("%d\n", Button.buttonPressed());
-        ls.demoCycle();
-    }
 
+    while(1){
+        re.rotaryDeal();
+
+        // delay(100);
+    }
 }
 
 
