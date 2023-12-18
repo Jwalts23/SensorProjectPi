@@ -7,7 +7,7 @@
     bool button::read(){
         return digitalRead(pin);
     }
-    bool button::buttonPressed(){
+    bool button::pressed(){
         static bool lastButtonState;
         bool buttonState = read();
         if (buttonState != lastButtonState)
