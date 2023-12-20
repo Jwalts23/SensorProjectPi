@@ -9,6 +9,7 @@
 #define uint unsigned int
 #define Max7219_pinCS  RPI_GPIO_P1_24
 
+//This class is made for use with a LED matrix.
 class LEDmatrix{
 
     public:
@@ -25,7 +26,7 @@ class LEDmatrix{
         int MOSI, CEO, SCLK;
 
 
-        // Turn this to a map eventually so that i can just call the char
+        //This is a list of 0-9 and A-Z
         uchar disp1[36][8]={
         {0x3C,0x42,0x42,0x42,0x42,0x42,0x42,0x3C},//0
         {0x08,0x18,0x28,0x08,0x08,0x08,0x08,0x08},//1

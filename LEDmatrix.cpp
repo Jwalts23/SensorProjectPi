@@ -6,11 +6,13 @@ void LEDmatrix::Delay_xms(uint x){
     bcm2835_delay(x);
 }
 
+// send the data over SPI
 void LEDmatrix::Write_Max7219_byte(uchar DATA){
     bcm2835_gpio_write(Max7219_pinCS,LOW);
     bcm2835_spi_transfer(DATA);
 }
 
+// Write the row of the LED matrx to the bcm2835
 void LEDmatrix::Write_Max7219(uchar address1,uchar dat1){
     bcm2835_gpio_write(Max7219_pinCS,LOW);
     Write_Max7219_byte(address1);
@@ -18,6 +20,7 @@ void LEDmatrix::Write_Max7219(uchar address1,uchar dat1){
     bcm2835_gpio_write(Max7219_pinCS,HIGH);
 }
 
+//Initialize the display
 void LEDmatrix::Init_MAX7219(){
     Write_Max7219(0x09,0x00);
     Write_Max7219(0x0a,0x03);
@@ -26,6 +29,7 @@ void LEDmatrix::Init_MAX7219(){
     Write_Max7219(0x0f,0x00);
 }
 
+//Set all the default vals for bcm2835
 void LEDmatrix::Init_BCM2835(){
     bcm2835_spi_begin();
     bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST);
@@ -46,6 +50,7 @@ void LEDmatrix::init(){
     Init_MAX7219();
 }
 
+//This will go through the list of letters and numbers and display them
 void LEDmatrix::testLoop(){
     while (1){
         for (int j = 0; j < 36; j++){

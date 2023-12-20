@@ -3,18 +3,20 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
-#include "rotaryEncoder.h"
+#include "pot.h"
 #include <array>
 
 #endif // _INCLUDES_H_
 
+#define     LedPin    3
 
-rotaryEncoder re = rotaryEncoder();
+pot p = pot();
 
 
 void init(){
     wiringPiSetup();
-    re.init();
+    p.init();
+    softPwmCreate(LedPin,  0, 100);
 
 }
 
@@ -24,9 +26,10 @@ int main(void){
 
 
     while(1){
-        re.rotaryDeal();
-
-        // delay(100);
+        int analogVal = p.get_ADC_Result(0);
+        printf("Current analogVal : %d\n", analogVal);
+        softPwmWrite(LedPin, analogVal);
+        delay(100);
     }
 }
 

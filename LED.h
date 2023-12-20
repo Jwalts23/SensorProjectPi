@@ -2,6 +2,7 @@
 #include <wiringPi.h>
 #pragma once
 
+// This class is made for a Pull down LED
 class LED{
     public:
         void setPin(int pin);

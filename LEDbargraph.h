@@ -2,6 +2,7 @@
 #include <wiringPi.h>
 #include <array>
 
+// This class is made for the use with an LED bargraph
 class LEDbargraph{
     public:
         LEDbargraph(std::array<int,10> Pins) : pins(Pins) {};
