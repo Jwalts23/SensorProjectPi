@@ -4,132 +4,99 @@
 #include <stdio.h>
 #include <wiringPi.h>
 #include "pot.h"
-#include "button.h"
 #include <array>
 #include "LED.h"
 
 #endif // _INCLUDES_H_
 
-// LED pins -  23,24,22 
-#define     GreenLED    4
-#define     YellowLED   5
-#define     RedLED      3
-
-//pin 26
-#define     ButtonPin   25
-
-//Pot pins - 17,18,27
-#define     ADCcs       0
-#define     ADCclk      1 
-#define     ADCdio      2
+#define     LedPin  3
 
 enum STATE {WELCOME,GENERATE_NUM, ENTER_NUMBER,TOO_HIGH, TOO_LOW, END_GAME, PLAY_AGAIN};
-STATE state = WELCOME;
-
-pot p = pot(ADCcs,ADCclk, ADCdio);
-button selector = button(ButtonPin);
-LED red = LED(RedLED);
-LED yellow = LED(YellowLED);
-LED green = LED(GreenLED);
+STATE states = WELCOME;
 
 
-void init(){
+
+void HLinit(){
     wiringPiSetup();
-    red.init();
-    yellow.init();
-    green.init();
-    selector.init();
-    p.init();
+
 }
 
-int main(void){
+int highLow(void){
     int num;
-    int temp;
     char playAgain;
     bool generateRand = true;
-    init(); 
+    HLinit(); 
     int random;
     while(1){
 
-        switch (state){
+        switch (states){
             case WELCOME:
                 std::cout << "Welcome to the high low game.\n";
                 std::cout << "You will enter a number until you guess the computer's number.\n";
-                state = GENERATE_NUM;
+                states = GENERATE_NUM;
             break;
 
             case GENERATE_NUM:
                 srand((int)time(0));
                 random = rand()%101;
-                state = ENTER_NUMBER;
+                states = ENTER_NUMBER;
             break; 
 
             case ENTER_NUMBER:
-                std::cout << "Spin the knob to display a number: ";
-                std::cout << "Press buton to select number: ";
-                // std::cin >> num;
-                
-                while(!selector.pressed()){
-                    temp = p.get_ADC_Result(0);
-                    if (temp != 0){
-                        num = temp;
-                        std::cout << "Current Number is:" << num << "\n";
-                    }
-                    
+                std::cout << "Enter a number: ";
+                std::cin >> num;
 
-                    delay (20);
+
+
+                if (!std::cin){
+                    std::cout << "Invalid input. Try again. \n";
+                    std::cin.clear();
+                    std::cin.ignore(1000,'\n');
+                    states = ENTER_NUMBER;
+                    break;
                 }
-
-
-                // if (!std::cin){
-                //     std::cout << "Invalid input. Try again. \n";
-                //     std::cin.clear();
-                //     std::cin.ignore(1000,'\n');
-                //     state = ENTER_NUMBER;
-                //     break;
-                // }
                 
                 std::cout << "The number is " << random << "\n";
                 std::cout << "You entered " << num << "\n";
 
                 if (num == random){
                     std::cout << "You did it!\n";
-                    state = PLAY_AGAIN;
+                    states = PLAY_AGAIN;
 
                 }
                 else if (num > random){
-                    state = TOO_HIGH;
+                    states = TOO_HIGH;
                 }
                 else if (num < random){
-                   state = TOO_LOW;
+                   states = TOO_LOW;
                 }else {
-                    state = ENTER_NUMBER;
+                    states = ENTER_NUMBER;
                 }
 
             break;
 
             case TOO_HIGH:
                 std::cout << "Too high!\n";
-                state = ENTER_NUMBER;
+                states = ENTER_NUMBER;
             break; 
 
             case TOO_LOW:
                 std::cout << "Too low!\n";
-                state = ENTER_NUMBER;
+                states = ENTER_NUMBER;
             break; 
 
             case PLAY_AGAIN:
                 std::cout << "Would you like to play again? y or n\n";
                 std::cin >> playAgain;
                 if (playAgain == 'y' || playAgain == 'Y'){
-                    state = WELCOME;
+                    states = WELCOME;
                 }
                 else if (playAgain == 'n' || playAgain == 'N'){
-                    state = END_GAME;
+                    states = END_GAME;
                 }
                 else{
                     std::cout << "Invalid input " << random << "\n";
-                    state = PLAY_AGAIN;
+                    states = PLAY_AGAIN;
                 }
             break;
 
