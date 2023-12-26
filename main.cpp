@@ -27,6 +27,7 @@ enum STATE {WELCOME,GENERATE_NUM, ENTER_NUMBER,TOO_HIGH, TOO_LOW, END_GAME, PLAY
 STATE state = WELCOME;
 
 pot p = pot(ADCcs,ADCclk, ADCdio);
+
 button selector = button(ButtonPin);
 LED red = LED(RedLED);
 LED yellow = LED(YellowLED);
@@ -65,19 +66,19 @@ int main(void){
             break; 
 
             case ENTER_NUMBER:
-                std::cout << "Spin the knob to display a number: ";
-                std::cout << "Press buton to select number: ";
+                std::cout << "Spin the knob to display a number. \n";
+                std::cout << "Press button to select number: \n";
                 // std::cin >> num;
                 
                 while(!selector.pressed()){
                     temp = p.get_ADC_Result(0);
                     if (temp != 0){
                         num = temp;
-                        std::cout << "Current Number is:" << num << "\n";
+                        std::cout << "Current Number is: " << num << "\n";
                     }
                     
 
-                    delay (20);
+                    // delay (20);
                 }
 
 
@@ -110,11 +111,13 @@ int main(void){
 
             case TOO_HIGH:
                 std::cout << "Too high!\n";
+                delay(20);
                 state = ENTER_NUMBER;
             break; 
 
             case TOO_LOW:
                 std::cout << "Too low!\n";
+                delay(20);
                 state = ENTER_NUMBER;
             break; 
 
