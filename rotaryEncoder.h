@@ -15,6 +15,8 @@ class rotaryEncoder{
         void rotaryDeal();
         int readDTpin();
         int readCLKpin();
+        void rotaryDealPositiveRanged(int range);
+        int getCounts();
 
     private:
         int clkPin;

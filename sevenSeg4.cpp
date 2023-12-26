@@ -31,25 +31,33 @@ void sevenSeg4::pickDigit(int digit){
 }
 
 void sevenSeg4::displayNumber(int num){
+        
         clearDisplay();
         pickDigit(0);
         hc595_shift(number[num % 10]);
+        // printf("%d ones\n", num % 10);
 
         clearDisplay();
         pickDigit(1);
         hc595_shift(number[num % 100 / 10]);
+        // printf("%d tens\n", num % 100 / 10);
 
         clearDisplay();
         pickDigit(2);
         hc595_shift(number[num % 1000 / 100]);
+        // printf("%d huns\n", num % 1000 / 100);
 
         clearDisplay();
         pickDigit(3);
         hc595_shift(number[num % 10000 / 1000]);
+        // printf("%d thos\n", num % 10000 / 1000);
 }
 
 void sevenSeg4::testLoop(){
+        // signal(SIGALRM, timer);
+        // alarm(1);
     while(1){
+        printf("%d\n", counter);
         displayNumber(counter);
     }
 }
