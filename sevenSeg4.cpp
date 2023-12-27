@@ -53,6 +53,29 @@ void sevenSeg4::displayNumber(int num){
         // printf("%d thos\n", num % 10000 / 1000);
 }
 
+// display high or low - defaults to high
+
+void sevenSeg4::displayHiLo(bool low){
+    // set chars to high
+    unsigned char L1 = Hi[0];
+    unsigned char L2 = Hi[1];
+
+    // switch to low
+    if (low){
+        L1 = Lo[0];
+        L2 = Lo[1];
+    }
+
+    clearDisplay();
+    pickDigit(1);
+    hc595_shift(L1);
+    // printf("%d huns\n", num % 1000 / 100);
+
+    clearDisplay();
+    pickDigit(0);
+    hc595_shift(L2);
+}
+
 void sevenSeg4::testLoop(){
         // signal(SIGALRM, timer);
         // alarm(1);

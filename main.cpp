@@ -6,6 +6,7 @@
 #include "rotaryEncoder.h"
 #include "button.h"
 #include <array>
+#include <thread>
 #include "LED.h"
 #include "sevenSeg4.h"
 
@@ -51,6 +52,23 @@ LED green = LED(GreenLED);
 //int Dig1Pin = -1, int Dig2Pin = -1, int Dig3Pin = -1, int Dig4Pin = -1, int sdi = -1, int rclk = -1, int srkclk = -1
 sevenSeg4 sevenSeg = sevenSeg4(DIG1, DIG2, DIG3, DIG4, SDI, RCLK, SRCLK);
 
+bool stopFlag = false;
+bool dispHighLowMode = false;
+bool isLow = false;
+
+// this function is for the thread to be able to continuosly display teh updated number on the 7 segment.
+void displayNumber(int &num, bool &isLow){
+    while(true && !stopFlag){
+        if(!dispHighLowMode){
+            sevenSeg.displayNumber(num);
+        }else{
+            sevenSeg.displayHiLo(isLow);
+        }
+        // 
+    }
+    sevenSeg.clearDisplay();
+    std::cout << "display thread stopped. \n";
+}
 
 void init(){
     wiringPiSetup();
@@ -91,9 +109,8 @@ int main(void){
     //     // delay(100);
     //     num++;
     // }
- 
+    std::thread seg(displayNumber, std::ref(num), std::ref(isLow));
     while(1){
-
         switch (state){
             case WELCOME:
                 std::cout << "Welcome to the high low game.\n";
@@ -121,15 +138,15 @@ int main(void){
                     counts = re.getCounts();
                 if (temp != counts){
                     num = counts;
-                        // for (int j=0; j<10000; j++){
-                            sevenSeg.displayNumber(num);
-                        // }
+                    dispHighLowMode = false;
                     std::cout << "Current guess is: " << num << "\n";
                     temp = counts;
                     }
                   
                    state = ENTER_NUMBER;
                    break;
+                }else {
+                    // sevenSeg.displayNumber(num);
                 }
 
 
@@ -164,6 +181,8 @@ int main(void){
             break;
 
             case TOO_HIGH:
+                isLow = false;
+                dispHighLowMode = true;
                 std::cout << "Too high!\n";
                 red.on();
                 delay(15);
@@ -172,6 +191,8 @@ int main(void){
             break; 
 
             case TOO_LOW:
+                isLow = true;
+                dispHighLowMode = true;
                 std::cout << "Too low!\n";
                 yellow.on();
                 delay(15);
@@ -196,6 +217,8 @@ int main(void){
             break;
 
             case END_GAME:
+                stopFlag = true;
+                seg.join();
                 std::cout << "Thanks for playing\n";
                 return 0;
             break; 

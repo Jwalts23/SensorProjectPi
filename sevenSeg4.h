@@ -15,6 +15,7 @@ public:
     void pickDigit(int digit);
     void displayNumber(int num);
     void testLoop();
+    void displayHiLo(bool low);
 
 
 private:
@@ -22,4 +23,6 @@ private:
     int *pdig1Pin{&dig1Pin}, *pdig2Pin{&dig2Pin}, *pdig3Pin{&dig3Pin}, *pdig4Pin{&dig4Pin};
     std::array< int, 4> placePin = {*pdig1Pin, *pdig2Pin, *pdig3Pin, *pdig4Pin};
     std::array< unsigned char, 16> number = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+    std::array< unsigned char, 2>  Lo = {0xc7, 0xA3};
+    std::array< unsigned char, 2>  Hi = {0x89, 0xcf};
 };
